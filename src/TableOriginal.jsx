@@ -26,8 +26,8 @@ function Table({ issues }) {
 
     const totalSelected = updatedCheckedState
       .map((element) => element.checked)
-      .reduce((sum, currenctState, index) => {
-        if (currenctState) {
+      .reduce((sum, currentState, index) => {
+        if (currentState) {
           return sum + issues[index].value
         }
         return sum
