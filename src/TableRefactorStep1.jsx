@@ -9,21 +9,16 @@ function Table({ issues }) {
   const [numCheckboxesSelected, setNumCheckboxesSelected] = useState(0);
 
   const handleOnChange  = (id) => { // 전체 배열을 복제하고 반복 할 필요 없이, id 를 받아서, id가 있으면 지우고, 아니면 추가
-    const updatedCheckedState = new Map(checkedById)
-    if (updatedCheckedState.get(id)) {
-      updatedCheckedState.delete(id)
+    const updatedCheckedById = new Map(checkedById)
+    if (updatedCheckedById.get(id)) {
+      updatedCheckedById.delete(id)
     } else {
-      updatedCheckedState.set(id, true)
+      updatedCheckedById.set(id, true)
     }
+    setCheckedById(updatedCheckedById); // 체크박스 상태 업데이트
 
-    const totalSelected = updatedCheckedState
-      .map((element) => element.checked)
-      .reduce((sum, currentState, index) => {
-        if (currentState) {
-          return sum + issues[index].value
-        }
-        return sum
-      }, 0)
+    const totalSelected = updatedCheckedById.size // 선택 된 체크박스의 갯수
+
     setNumCheckboxesSelected(totalSelected)
     handleIndeterminateCheckbox(totalSelected);
   }
