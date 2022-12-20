@@ -33,8 +33,34 @@ function Table({ issues }) {
         return sum
       }, 0)
     setNumCheckboxesSelected(totalSelected)
+    handleIndeterminateCheckbox(totalSelected);
   }
 
+  const handleIndeterminateCheckbox = (total) => {
+    const indeterminateCheckbox = document.getElementById(
+      "custom-checkbox-selectDeselectAll"
+    );
+    let count = 0;
+
+    issues.forEach((element) => {
+      if (element.status === "open") {
+        count += 1;
+      }
+    });
+
+    if (total === 0) {
+      indeterminateCheckbox.indeterminate = false;
+      setSelectDeselectAllIsChecked(false);
+    }
+    if (total > 0 && total < count) {
+      indeterminateCheckbox.indeterminate = true;
+      setSelectDeselectAllIsChecked(false);
+    }
+    if (total === count) {
+      indeterminateCheckbox.indeterminate = false;
+      setSelectDeselectAllIsChecked(true);
+    }
+  };
 
 
   const handleSelectDeselectAll = (e) =>{
