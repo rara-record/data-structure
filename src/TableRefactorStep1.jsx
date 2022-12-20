@@ -1,11 +1,20 @@
 import {useState} from "react";
 import classes from "./Table.module.css";
 function Table({ issues }) {
+  const [checkedById, setCheckedById] = useState(new Map()); // key : value 형태로 저장
 
   const [selectDeselectAllIsChecked, setSelectDeselectAllIsChecked] = useState(
     false
   );
   const [numCheckboxesSelected, setNumCheckboxesSelected] = useState(0);
+
+  const handleOnChange  = (id) => { // 전체 배열을 복제하고 반복 할 필요 없이, id 를 받아서, id가 있으면 지우고, 아니면 추가
+    const updatedCheckedState = new Map(checkedById)
+    if (updatedCheckedState.get(id)) {
+      updatedCheckedState.delete(id)
+    } else {
+      updatedCheckedState.set(id, true)
+    }
 
     const totalSelected = updatedCheckedState
       .map((element) => element.checked)
