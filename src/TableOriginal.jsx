@@ -11,7 +11,37 @@ function Table({ issues }) {
   );
   const [numCheckboxesSelected, setNumCheckboxesSelected] = useState(0);
 
-  const handleOnChange = () =>{}
+  const handleSelectDeselectAll = (e) =>{
+    let {checked} = e.target
+
+    const allTrueArray = [];
+    issues.forEach((element) => {
+      if (element.status === "open") {
+        allTrueArray.push({ checked: true, backgroundColor: "#eeeeee" });
+      } else {
+        allTrueArray.push({ checked: false, backgroundColor: "#ffffff" });
+      }
+    });
+
+    const allFalseArray = new Array(issues.length).fill({
+      checked: false,
+      backgroundColor: "#ffffff"
+    });
+
+    checked ? setCheckedState(allTrueArray) : setCheckedState(allFalseArray);
+
+    const totalSelected = (checked ? allTrueArray : allFalseArray)
+      .map((element) => element.checked)
+      .reduce((sum, currentState, index) => {
+        if (currentState && issues[index].status === "open") {
+          return sum + issues[index].value
+        }
+        return sum
+    }, 0)
+    setNumCheckboxesSelected(totalSelected)
+    setSelectDeselectAllIsChecked((prevState) => !prevState);
+
+  }
 
   return (
     <table className={classes.table}>
@@ -25,6 +55,7 @@ function Table({ issues }) {
             name={"custom-checkbox-selectDeselectAll"}
             value={"custom-checkbox-selectDeselectAll"}
             checked={selectDeselectAllIsChecked}
+            onChange={handleSelectDeselectAll}
           />
         </th>
         <th className={classes.numChecked}>
