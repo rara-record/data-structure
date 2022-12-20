@@ -21,7 +21,7 @@ function Table({ issues }) {
 
     const updatedNumberChecked = updatedCheckedById.size;
 
-    // ref 참조 + numberOpenIssues 재사용 
+    // ref 참조 + numberOpenIssues 재사용
     topCheckbox.current.indeterminate =
       updatedNumberChecked > 0 && updatedNumberChecked < numberOpenIssues
   }
@@ -94,47 +94,28 @@ function Table({ issues }) {
 
       <tbody>
       {
-        issues.map(({ id, name, message, status }, index) => {
-          let issueIsOpen = status === 'open';
-          let onClick = issueIsOpen ? () => handleOnChange(id) : null;
-          let stylesTr = issueIsOpen
-            ? classes.openIssue
-            : classes.resolvedIssue;
+        issues.map(({ id, name, message, status }) => {
+          let isIssueOpen = status === 'open';
 
           return (
             <tr
-              className={stylesTr}
+              className={isIssueOpen ? classes.openIssue : classes.resolvedIssue}
               style={{ backgroundColor: checkedById.get(id) ? '#eee' : '#fff'}}
               key={id}
-              onClick={onClick}
             >
               <td>
-                {issueIsOpen ? (
-                  <input
-                    className={classes.checkbox}
-                    type={"checkbox"}
-                    id={`custom-checkbox-${index}`}
-                    name={name}
-                    value={name}
-                    checked={Boolean(checkedById.get(id))}
-                    onChange={() => handleOnChange(id)}
-                  />
-                ) : (
-                  <input
-                    className={classes.checkbox}
-                    type={"checkbox"}
-                    disabled
-                  />
-                )}
+                <input
+                  className={classes.checkbox}
+                  type={"checkbox"}
+                  checked={Boolean(checkedById.get(id))}
+                  onChange={() => handleOnChange(id)}
+                  disabled={!isIssueOpen}
+                />
               </td>
               <td>{name}</td>
               <td>{message}</td>
               <td>
-                {issueIsOpen ? (
-                  <span className={classes.greenCircle} />
-                ) : (
-                  <span className={classes.redCircle} />
-                )}
+                <span className={isIssueOpen ? classes.greenCircle : classes.redCircle} />
               </td>
             </tr>
           )
