@@ -77,6 +77,15 @@ function Table({ issues }) {
                  />
                )}
              </td>
+             <td>{name}</td>
+             <td>{message}</td>
+             <td>
+               {issueIsOpen ? (
+                 <span className={classes.greenCircle} />
+               ) : (
+                 <span className={classes.redCircle} />
+               )}
+             </td>
            </tr>
          )
        })
