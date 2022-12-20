@@ -4,6 +4,10 @@ function Table({ issues }) {
   const topCheckbox = useRef();
   const [checkedById, setCheckedById] = useState(new Map());
 
+  const openIssues = useMemo(
+    () => issues.filter(({ status }) => status === "open"),
+    [issues]
+  );
 
   console.log(checkedById)
 
