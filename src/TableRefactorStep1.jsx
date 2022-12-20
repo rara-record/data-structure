@@ -95,9 +95,9 @@ function Table({ issues }) {
 
       <tbody>
       {
-        issues.map(({ name, message, status }, index) => {
+        issues.map(({ id, name, message, status }, index) => {
           let issueIsOpen = status === 'open';
-          let onClick = issueIsOpen ? () => handleOnChange(index) : null;
+          let onClick = issueIsOpen ? () => handleOnChange(id) : null;
           let stylesTr = issueIsOpen
             ? classes.openIssue
             : classes.resolvedIssue;
@@ -105,8 +105,8 @@ function Table({ issues }) {
           return (
             <tr
               className={stylesTr}
-              style={checkedState[index]}
-              key={index}
+              style={{ backgroundColor: checkedById.get(id) ? '#eee' : '#fff'}}
+              key={id}
               onClick={onClick}
             >
               <td>
@@ -117,8 +117,8 @@ function Table({ issues }) {
                     id={`custom-checkbox-${index}`}
                     name={name}
                     value={name}
-                    checked={checkedState[index].checked}
-                    onChange={() => handleOnChange(index)}
+                    checked={Boolean(checkedById.get(id))}
+                    onChange={() => handleOnChange(id)}
                   />
                 ) : (
                   <input
