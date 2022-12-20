@@ -11,6 +11,8 @@ function Table({ issues }) {
   );
   const [numCheckboxesSelected, setNumCheckboxesSelected] = useState(0);
 
+  const handleOnChange = () =>{}
+
   return (
     <table className={classes.table}>
       <thead>
@@ -40,7 +42,46 @@ function Table({ issues }) {
       </tr>
       </thead>
 
-     <tbody></tbody>
+     <tbody>
+     {
+       issues.map(({ name, message, status }, index) => {
+         let issueIsOpen = status === 'open';
+         let onClick = issueIsOpen ? () => handleOnChange(index) : null;
+         let stylesTr = issueIsOpen
+           ? classes.openIssue
+           : classes.resolvedIssue;
+
+         return (
+           <tr
+             className={stylesTr}
+             style={checkedState[index]}
+             key={index}
+             onClick={onClick}
+           >
+             <td>
+               {issueIsOpen ? (
+                 <input
+                   className={classes.checkbox}
+                   type={"checkbox"}
+                   id={`custom-checkbox-${index}`}
+                   name={name}
+                   value={name}
+                   checked={checkedState[index].checked}
+                   onChange={() => handleOnChange(index)}
+                 />
+               ) : (
+                 <input
+                   className={classes.checkbox}
+                   type={"checkbox"}
+                   disabled
+                 />
+               )}
+             </td>
+           </tr>
+         )
+       })
+     }
+     </tbody>
     </table>
   );
 }
