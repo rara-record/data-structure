@@ -11,7 +11,7 @@ function Table({ issues }) {
   );
   const [numCheckboxesSelected, setNumCheckboxesSelected] = useState(0);
 
-  const handleChange = (position) => {
+  const handleOnChange  = (position) => {
     const updatedCheckedState = checkedState.map((element, index) => {
       if (position === index) {
         return {
