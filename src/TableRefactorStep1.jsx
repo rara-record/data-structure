@@ -50,34 +50,15 @@ function Table({ issues }) {
   };
 
 
-  const handleSelectDeselectAll = (e) =>{
-    let {checked} = e.target
-
-    const allTrueArray = [];
-    issues.forEach((element) => {
-      if (element.status === "open") {
-        allTrueArray.push({ checked: true, backgroundColor: "#eeeeee" });
-      } else {
-        allTrueArray.push({ checked: false, backgroundColor: "#ffffff" });
-      }
-    });
-
-    const allFalseArray = new Array(issues.length).fill({
-      checked: false,
-      backgroundColor: "#ffffff"
-    });
-
-    checked ? setCheckedState(allTrueArray) : setCheckedState(allFalseArray);
-
-    const totalSelected = (checked ? allTrueArray : allFalseArray)
-      .map((element) => element.checked)
-      .reduce((sum, currentState, index) => {
-        if (currentState && issues[index].status === "open") {
-          return sum + issues[index].value
-        }
-        return sum
-      }, 0)
-    setNumCheckboxesSelected(totalSelected)
+  const handleSelectDeselectAll = (e) => { // all check click handler
+    if (e.target.checked) {
+      const openIssues = issues.filter(({ status }) => status === "open"); // status: 'open' 인 것만 필터링해서 담음
+      const allChecked = new Map(openIssues.map(({ id }) => id, true)); // 필터링 된 데이터들의 id만 저장
+      setCheckedById(allChecked); // 체크박스 상태를 업데이트
+      setNumCheckboxesSelected(allChecked.size); //
+    } else {
+      setCheckedById(new Map());
+    }
     setSelectDeselectAllIsChecked((prevState) => !prevState);
 
   }
