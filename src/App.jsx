@@ -4,6 +4,8 @@ import React from 'react';
 import issues from "./issues";
 import TableOriginal from "./TableOriginal";
 import TableRefactorStep1 from "./TableRefactorStep1.jsx";
+import TableRefactorStep2 from "./TableRefactorStep2.jsx";
+
 
 
 const App = () => {
@@ -24,7 +26,7 @@ const App = () => {
         <TableRefactorStep1 issues={issues} />
       </TabPanel>
       <TabPanel>
-
+        <TableRefactorStep2 issues={issues} />
       </TabPanel>
       <TabPanel>
 

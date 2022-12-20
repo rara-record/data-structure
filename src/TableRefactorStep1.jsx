@@ -58,9 +58,9 @@ function Table({ issues }) {
       setNumCheckboxesSelected(allChecked.size); //
     } else {
       setCheckedById(new Map());
+      setNumCheckboxesSelected(0);
     }
     setSelectDeselectAllIsChecked((prevState) => !prevState);
-
   }
 
   return (
