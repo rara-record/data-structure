@@ -11,6 +11,32 @@ function Table({ issues }) {
   );
   const [numCheckboxesSelected, setNumCheckboxesSelected] = useState(0);
 
+  const handleChange = (position) => {
+    const updatedCheckedState = checkedState.map((element, index) => {
+      if (position === index) {
+        return {
+          ...element,
+          checked: !element.checked,
+          backgroundColor: element.checked ? "#ffffff" : "#eeeeee"
+        }
+      }
+      return element
+    })
+    setCheckedState(updatedCheckedState);
+
+    const totalSelected = updatedCheckedState
+      .map((element) => element.checked)
+      .reduce((sum, currenctState, index) => {
+        if (currenctState) {
+          return sum + issues[index].value
+        }
+        return sum
+      }, 0)
+    setNumCheckboxesSelected(totalSelected)
+  }
+
+
+
   const handleSelectDeselectAll = (e) =>{
     let {checked} = e.target
 
