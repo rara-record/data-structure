@@ -1,3 +1,15 @@
+import {useRef, useState} from "react";
+import classes from "./Table.module.css";
+function Table({ issues }) {
+  const topCheckbox = useRef();
+  const [checkedById, setCheckedById] = useState(new Map());
+
+  const openIssues = issues.filter(({ status}) => status === 'open');
+
+  const numberOpenIssues = openIssues.length;
+  const numberCheckedIssues = checkedById.size;
+
+
   const handleOnChange  = (id) => {
     const updatedCheckedById = new Map(checkedById)
     if (updatedCheckedById.get(id)) {
@@ -40,3 +52,95 @@
   //   }
   // };
 
+  const handleSelectDeselectAll = (e) => {
+    if (e.target.checked) {
+      const allChecked = new Map(openIssues.map(({ id }) => [id, true]));
+      setCheckedById(allChecked);
+    } else {
+      setCheckedById(new Map());
+    }
+  };
+
+  return (
+    <table className={classes.table}>
+      <thead>
+      <tr>
+        <th>
+          <input
+            className={classes.checkbox}
+            type={"checkbox"}
+            id={"custom-checkbox-selectDeselectAll"}
+            name={"custom-checkbox-selectDeselectAll"}
+            value={"custom-checkbox-selectDeselectAll"}
+            checked={numberOpenIssues === numberCheckedIssues} // 활성화 된 아이템 길이와, 체크 된 길이가 같다. == 모두 선택
+            onChange={handleSelectDeselectAll}
+          />
+        </th>
+        <th className={classes.numChecked}>
+          {numberOpenIssues
+            ? `Selected ${numberOpenIssues}`
+            : "None selected"
+          }
+        </th>
+      </tr>
+      <tr>
+        <th />
+        <th>Name</th>
+        <th>Message</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      {
+        issues.map(({ id, name, message, status }, index) => {
+          let issueIsOpen = status === 'open';
+          let onClick = issueIsOpen ? () => handleOnChange(id) : null;
+          let stylesTr = issueIsOpen
+            ? classes.openIssue
+            : classes.resolvedIssue;
+
+          return (
+            <tr
+              className={stylesTr}
+              style={{ backgroundColor: checkedById.get(id) ? '#eee' : '#fff'}}
+              key={id}
+              onClick={onClick}
+            >
+              <td>
+                {issueIsOpen ? (
+                  <input
+                    className={classes.checkbox}
+                    type={"checkbox"}
+                    id={`custom-checkbox-${index}`}
+                    name={name}
+                    value={name}
+                    checked={Boolean(checkedById.get(id))}
+                    onChange={() => handleOnChange(id)}
+                  />
+                ) : (
+                  <input
+                    className={classes.checkbox}
+                    type={"checkbox"}
+                    disabled
+                  />
+                )}
+              </td>
+              <td>{name}</td>
+              <td>{message}</td>
+              <td>
+                {issueIsOpen ? (
+                  <span className={classes.greenCircle} />
+                ) : (
+                  <span className={classes.redCircle} />
+                )}
+              </td>
+            </tr>
+          )
+        })
+      }
+      </tbody>
+    </table>
+  );
+}
+export default Table;
