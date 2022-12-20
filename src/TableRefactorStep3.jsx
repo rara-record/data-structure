@@ -67,6 +67,7 @@ function Table({ issues }) {
       <tr>
         <th>
           <input
+            ref={topCheckbox}
             className={classes.checkbox}
             type={"checkbox"}
             id={"custom-checkbox-selectDeselectAll"}
